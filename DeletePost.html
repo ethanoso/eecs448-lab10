@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Ethan Osorio</title>
+	</head>
+	<body>
+			
+		<form action="DeletePost.php" method="post">
+
+			<h3>Delete Posts</h3>
+			<?php
+			//Create/Test connection
+			$mysqli = new mysqli("mysql.eecs.ku.edu", "e259o067", "aip4eaT3", "e259o067");
+			if($mysqli->connect_error) {die("Connection failed: " . $mysqli->connect_error);}
+			//selects the users from the database
+			$query = $mysqli->query("SELECT * FROM Posts");
+			//checks if there are users
+			if ($query->num_rows > 0) {
+				// output data of each row
+				echo "<style>table, th, td {border: 1px solid black;}</style>";
+				echo "<table><th>Content</th><th>Author</th><th>Delete</th>";
+				while($row = $query->fetch_array()) {
+					echo "<tr><td>" . $row['content'] . "</td><td>" . $row['author_id'] . "</td>";
+					echo "<td><input type='checkbox' name='post[]' value='$row[post_id]'></td></tr>";
+				}
+				echo "</table>";
+				$query->free();
+				echo "<input type='submit'>";
+			}else {echo "0 posts";}
+
+			$mysqli->close();
+
+			?>
+		
+			
+		</form>
+	</body>
+</html>
